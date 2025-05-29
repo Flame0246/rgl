@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Sala del Trono</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body, html {
+      height: 100%;
+      overflow: hidden;
+      font-family: sans-serif;
+    }
+
+    .sala-bg {
+      background: url('sala.jpg') no-repeat center center;
+      background-size: cover;
+      height: 100%;
+      width: 100%;
+      position: relative;
+    }
+
+    #scrigno {
+      width: 200px;
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      cursor: pointer;
+      z-index: 2;
+    }
+
+    #foto {
+      display: none;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 300px;
+      transform: translate(-50%, -50%) scale(0.8);
+      opacity: 0;
+      z-index: 3;
+      transition: transform 0.5s ease-out, opacity 0.5s ease-out;
+    }
+
+    #foto.show {
+      display: block;
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    .cuore {
+      position: absolute;
+      font-size: 24px;
+      color: #ff4d6d;
+      animation: cuoreAnim 4s linear infinite;
+      pointer-events: none;
+      opacity: 0.7;
+    }
+
+    @keyframes cuoreAnim {
+      0% {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.5;
+      }
+      100% {
+        transform: scale(1.5) translateY(-200px) rotate(720deg);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="sala-bg">
+    <img id="scrigno" src="scrigno.png" alt="Scrigno" onclick="apriScrigno()">
+    <img id="foto" src="foto.jpg" alt="Foto misteriosa">
+  </div>
+
+  <script>
+    let scrignoAperto = false;
+
+    function apriScrigno() {
+      if (!scrignoAperto) {
+        document.getElementById('scrigno').src = 'scrigno_aperto.png';
+        const foto = document.getElementById('foto');
+        foto.classList.add('show');
+        scrignoAperto = true;
+
+        // Avvia i cuori all'apertura
+        setInterval(() => {
+          for (let i = 0; i < 40; i++) {
+            creaCuoricino();
+          }
+        }, 300);
+      }
+    }
+
+    function creaCuoricino() {
+      const cuore = document.createElement('div');
+      cuore.className = 'cuore';
+      cuore.innerText = '❤️';
+      cuore.style.left = Math.random() * window.innerWidth + 'px';
+      cuore.style.top = Math.random() * window.innerHeight + 'px';
+      cuore.style.fontSize = (Math.random() * 20 + 20) + 'px';
+      document.body.appendChild(cuore);
+
+      setTimeout(() => {
+        document.body.removeChild(cuore);
+      }, 4000);
+    }
+  </script>
+</body>
+</html>
+
